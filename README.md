@@ -1,5 +1,3 @@
-# decentralized-p2p
-
 # Decentralized Peer-to-Peer File Synchronization System
 
 ## 📌 Overview
