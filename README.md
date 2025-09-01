@@ -25,13 +25,3 @@ A **React + FastAPI dashboard** is included for monitoring and peer management.
 - **Frontend:** React, Next.js  
 - **DevOps:** Docker  
 
----
-
-## 📂 Project Structure
-p2p-sync/
-├── crdt/ # CRDT engine and operations
-├── nat/ # ICE Agent for NAT traversal
-├── sync/ # Sync + Gossip protocol logic
-├── dashboard/ # React + FastAPI dashboard
-├── tests/ # Unit and integration tests
-└── README.md
