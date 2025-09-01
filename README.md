@@ -22,6 +22,5 @@ A **React + FastAPI dashboard** is included for monitoring and peer management.
 - **Backend:** Python (asyncio, aioice), FastAPI  
 - **Core:** CRDT engine, Gossip protocol  
 - **Networking:** WebRTC ICE (STUN/TURN)  
-- **Frontend:** React, Next.js  
-- **DevOps:** Docker  
+  
 
