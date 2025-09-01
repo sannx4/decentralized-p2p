@@ -1,0 +1,51 @@
+syntax = "proto3";
+package syncp2p;
+
+// Peer Discovery
+message DiscoveryMessage {
+    string peer_id = 1;
+    string peer_name = 2;
+    repeated string capabilities = 3;
+    int64 timestamp = 4;
+    repeated NetworkEndpoint endpoints = 5;
+}
+
+message NetworkEndpoint {
+    string ip_address = 1;
+    int32 port = 2;
+    string protocol = 3; // "tcp" or "udp"
+}
+
+// ICE Negotiation
+message ICECandidateMessage {
+    string peer_id = 1;
+    string candidate = 2;
+    string sdp_mid = 3;
+    int32 sdp_m_line_index = 4;
+    string username_fragment = 5;
+    string password = 6;
+}
+
+message ICEControlMessage {
+    enum MessageType { OFFER = 0; ANSWER = 1; CANDIDATE = 2; COMPLETE = 3; }
+    MessageType type = 1;
+    string session_id = 2;
+    bytes payload = 3;
+}
+
+// CRDT Operations
+message CRDTOperationMessage {
+    string file_id = 1;
+    string operation_type = 2; // "create", "rename", "delete", "modify"
+    bytes operation_payload = 3;
+    int64 logical_timestamp = 4;
+    string peer_id = 5;
+    string parent_hash = 6;
+}
+
+message CRDTStateMessage {
+    string file_id = 1;
+    map<string, bytes> state_vectors = 2;
+    repeated CRDTOperationMessage pending_ops = 3;
+}
+

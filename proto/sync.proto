@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package sync;
+
+import "crdt.proto"; // brings in CRDTOperation
+
+message VersionVectorEntry {
+  string site_id = 1;
+  uint64 counter = 2;
+}
+
+message VersionVector {
+  repeated VersionVectorEntry entries = 1;
+}
+
+message Digest {
+  VersionVector vv = 1;
+  uint64 op_count = 2;
+  bytes bloom = 3;
+  uint32 approx_bytes = 4;
+}
+
+message DeltaRequest {
+  VersionVector want_from = 1;
+  uint32 max_bytes = 2;
+  uint32 max_ops = 3;
+}
+
+message DeltaChunk {
+  // Use your CRDTOperation type here
+  repeated CRDTOperation ops = 1;
+  bool last = 2;
+}
+
+message Ack {
+  string for_msg = 1;
+}
+
+message Envelope {
+  string msg_id = 1;
+  string from = 2;
+  string room = 3;
+
+  oneof payload {
+    Digest digest = 10;
+    DeltaRequest delta_req = 11;
+    DeltaChunk delta_chunk = 12;
+    Ack ack = 13;
+  }
+}

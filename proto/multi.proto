@@ -1,0 +1,66 @@
+syntax = "proto3";
+package sync;
+
+// Top-level envelope that wraps all multi-peer sync/control messages.
+message Envelope {
+string from_id = 1; // sender peer_id
+uint64 seq_no = 2; // transport-level, per-sender monotonic
+enum Type {
+DELTA = 0;
+PULL_REQ = 1;
+PULL_RESP = 2;
+DIGEST = 3;
+SNAPSHOT_REQ = 4;
+SNAPSHOT_RESP = 5;
+HB = 6; // heartbeat
+PEER_ADVERT = 7; // membership advertisement
+}
+Type type = 3;
+bytes payload = 4; // encoded inner message (see types below)
+string token = 5; // optional cluster admission token
+}
+
+// Deltas bundled for gossip push.
+message DeltaBundle {
+repeated bytes deltas = 1; // each is a CRDT delta blob (engine-defined)
+}
+
+// Pull missing deltas since a cursor understood by your CRDT engine.
+message PullRequest {
+bytes cursor = 1; // engine-defined opaque cursor/causal context
+}
+
+// Response with missing deltas and the new sender-side cursor.
+message PullResponse {
+repeated bytes deltas = 1;
+bytes new_cursor = 2;
+}
+
+// Digest for anti-entropy (version vector + optional checksum).
+message Digest {
+bytes vv = 1; // causal context / version vector (engine-defined)
+bytes checksum = 2; // optional fast hash of materialized state
+}
+
+// Request/response for state snapshot transfer (fallback healing).
+message SnapshotRequest {}
+message SnapshotResponse { bytes snapshot = 1; }
+
+// Lightweight liveness.
+message Heartbeat {
+string from_id = 1;
+uint64 ts_ms = 2;
+}
+
+// Peer info used in advertisements (addresses are opaque to sync layer).
+message Peer {
+string peer_id = 1;
+string addr = 2; // signaling/contact blob (stringified)
+uint64 last_seen = 3; // millis
+}
+
+// Share a small sample of peers you know about.
+message PeerAdvert {
+string from_id = 1;
+repeated Peer peers = 2;
+}
