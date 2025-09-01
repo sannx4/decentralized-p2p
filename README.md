@@ -13,9 +13,8 @@ A **React + FastAPI dashboard** is included for monitoring and peer management.
 - 🔄 CRDT-based sync engine for eventual consistency  
 - 🌐 Peer-to-peer networking with NAT traversal (ICE/STUN/TURN)  
 - 📡 Multi-peer gossip protocol for scalable state propagation  
-- 🔒 End-to-end encryption for secure sync  
-- 📊 Dashboard (React + FastAPI) for real-time monitoring  
-
+- 🔒 End-to-end encryption for secure sync
+  
 ---
 
 ## 🛠️ Tech Stack
